@@ -1,0 +1,69 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Premium Vehicle Auctions</h1>
+        <p style="color: var(--text-secondary); font-size: 1.125rem;">
+            Discover exceptional vehicles through our secure auction platform.
+            Bid with confidence on quality cars, trucks, and SUVs.
+        </p>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 3rem 0;">
+    <div class="card" style="text-align: center;">
+        <div style="font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;">
+            <i class="fas fa-shield-alt"></i>
+        </div>
+        <h3 style="margin-bottom: 1rem;">Secure Bidding</h3>
+        <p style="color: var(--text-secondary);">
+            Advanced security measures protect your transactions and personal information.
+        </p>
+    </div>
+
+    <div class="card" style="text-align: center;">
+        <div style="font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;">
+            <i class="fas fa-search"></i>
+        </div>
+        <h3 style="margin-bottom: 1rem;">Easy Search</h3>
+        <p style="color: var(--text-secondary);">
+            Find the perfect vehicle with our advanced search and filtering options.
+        </p>
+    </div>
+
+    <div class="card" style="text-align: center;">
+        <div style="font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;">
+            <i class="fas fa-clock"></i>
+        </div>
+        <h3 style="margin-bottom: 1rem;">Real-time Updates</h3>
+        <p style="color: var(--text-secondary);">
+            Stay informed with live auction updates and instant bid notifications.
+        </p>
+    </div>
+</div>
+
+<div style="text-align: center; margin: 3rem 0;">
+    @if (ViewContext.HttpContext.Session.GetString("UserToken") != null)
+    {
+        <a href="/Auctions" class="btn btn-primary" style="padding: 0.75rem 1.5rem; font-size: 1rem;">
+            <i class="fas fa-gavel"></i> View Active Auctions
+        </a>
+        <a href="/Vehicles" class="btn btn-outline" style="padding: 0.75rem 1.5rem; font-size: 1rem; margin-left: 1rem;">
+            <i class="fas fa-car"></i> Browse Vehicles
+        </a>
+    }
+    else
+    {
+        <a href="/Auth/Register" class="btn btn-primary" style="padding: 0.75rem 1.5rem; font-size: 1rem;">
+            <i class="fas fa-user-plus"></i> Get Started
+        </a>
+        <a href="/Auth/Login" class="btn btn-outline" style="padding: 0.75rem 1.5rem; font-size: 1rem; margin-left: 1rem;">
+            <i class="fas fa-sign-in-alt"></i> Login
+        </a>
+    }
+</div>
+

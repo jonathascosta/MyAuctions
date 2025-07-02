@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34916.146
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyAuctions.UserApi", "UserApi\src\MyAuctions.UserApi\MyAuctions.UserApi.csproj", "{C3998E47-CF61-40FC-8531-C8486D538061}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyAuctions.AuctionApi", "AuctionApi\src\MyAuctions.AuctionApi\MyAuctions.AuctionApi.csproj", "{9E06CD5B-339A-4B66-BB73-A46146AE4A14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAuctions.AuctionApi.Tests", "AuctionApi\test\MyAuctions.AuctionApi.Tests\MyAuctions.AuctionApi.Tests.csproj", "{F13C2915-0577-4B22-AB8C-51EB1CE3DBCD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAuctions.ApiGateway", "ApiGateway\src\MyAuctions.ApiGateway\MyAuctions.ApiGateway.csproj", "{F5D75054-80B6-4926-84AF-4F7190F702B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAuctions.AuctionHub", "AuctionHub\src\MyAuctions.AuctionHub\MyAuctions.AuctionHub.csproj", "{A6FC81D7-5E14-4DAE-A339-C2A289D5D2B9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C3998E47-CF61-40FC-8531-C8486D538061}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3998E47-CF61-40FC-8531-C8486D538061}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3998E47-CF61-40FC-8531-C8486D538061}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3998E47-CF61-40FC-8531-C8486D538061}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E06CD5B-339A-4B66-BB73-A46146AE4A14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E06CD5B-339A-4B66-BB73-A46146AE4A14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E06CD5B-339A-4B66-BB73-A46146AE4A14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E06CD5B-339A-4B66-BB73-A46146AE4A14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F13C2915-0577-4B22-AB8C-51EB1CE3DBCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F13C2915-0577-4B22-AB8C-51EB1CE3DBCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F13C2915-0577-4B22-AB8C-51EB1CE3DBCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F13C2915-0577-4B22-AB8C-51EB1CE3DBCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5D75054-80B6-4926-84AF-4F7190F702B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5D75054-80B6-4926-84AF-4F7190F702B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5D75054-80B6-4926-84AF-4F7190F702B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5D75054-80B6-4926-84AF-4F7190F702B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6FC81D7-5E14-4DAE-A339-C2A289D5D2B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6FC81D7-5E14-4DAE-A339-C2A289D5D2B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6FC81D7-5E14-4DAE-A339-C2A289D5D2B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6FC81D7-5E14-4DAE-A339-C2A289D5D2B9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {231EEDC5-9C4C-4EC3-A0FF-E67D012D64DA}
+	EndGlobalSection
+EndGlobal

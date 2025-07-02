@@ -1,0 +1,29 @@
+﻿@page
+@using MyAuctions.AuctionHub.Pages.Auth
+@model LogoutModel
+@{
+    ViewData["Title"] = "Logout";
+}
+
+<div class="page-header">
+    <h1 class="page-title">Logged Out</h1>
+</div>
+
+<div style="text-align: center;">
+    <div class="card" style="max-width: 400px; margin: 0 auto;">
+        <div style="font-size: 3rem; color: var(--success-color); margin-bottom: 1rem;">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h3 style="margin-bottom: 1rem;">Successfully Logged Out</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+            Thank you for using our auction platform!
+        </p>
+        <a href="/" class="btn btn-primary">
+            <i class="fas fa-home"></i> Go Home
+        </a>
+        <a href="/Auth/Login" class="btn btn-outline" style="margin-left: 1rem;">
+            <i class="fas fa-sign-in-alt"></i> Login Again
+        </a>
+    </div>
+</div>
+

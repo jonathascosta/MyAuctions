@@ -1,0 +1,91 @@
+﻿@page
+@using MyAuctions.AuctionHub.Pages.Auctions
+@model StartAuctionModel
+@{
+    ViewData["Title"] = "Start Auction";
+}
+
+@if (!User.IsInRole("Admin"))
+{
+    <div class="alert alert-error">
+        <i class="fas fa-exclamation-triangle"></i>
+        Access denied. Only administrators can start auctions.
+    </div>
+    <a href="/Auctions" class="btn btn-outline">
+        <i class="fas fa-arrow-left"></i> Back to Auctions
+    </a>
+}
+else
+{
+    <div class="page-header">
+        <h1 class="page-title">Start New Auction</h1>
+        <a href="/Auctions" class="btn btn-outline">
+            <i class="fas fa-arrow-left"></i> Back to Auctions
+        </a>
+    </div>
+
+    <div style="max-width: 600px; margin: 0 auto;">
+        <div class="card">
+            <form method="post">
+                @if (Model.SelectedVehicle != null)
+                {
+                    <div style="background: var(--background-color); padding: 1rem; border-radius: var(--border-radius); margin-bottom: 1.5rem;">
+                        <h4 style="margin-bottom: 0.5rem;">Selected Vehicle</h4>
+                        <div style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">
+                            @Model.SelectedVehicle.Year @Model.SelectedVehicle.Manufacturer @Model.SelectedVehicle.Model
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.875rem;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: var(--text-secondary);">Type:</span>
+                                <span style="font-weight: 500;">@Model.SelectedVehicle.Type</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: var(--text-secondary);">Suggested Starting Bid:</span>
+                                <span style="font-weight: 500;">$@Model.SelectedVehicle.StartingBid.ToString("N2")</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" asp-for="StartRequest.VehicleId" value="@Model.SelectedVehicle.Id" />
+                }
+                else
+                {
+                    <div class="form-group">
+                        <label class="form-label" asp-for="StartRequest.VehicleId">Select Vehicle</label>
+                        <select class="form-control" asp-for="StartRequest.VehicleId" required>
+                            <option value="">Choose a vehicle</option>
+                            @foreach (var vehicle in Model.AvailableVehicles)
+                            {
+                                <option value="@vehicle.Id">
+                                    @vehicle.Year @vehicle.Manufacturer @vehicle.Model (@vehicle.Type)
+                                </option>
+                            }
+                        </select>
+                        <span asp-validation-for="StartRequest.VehicleId" class="text-danger"></span>
+                    </div>
+                }
+
+                <div class="form-group">
+                    <label class="form-label" asp-for="StartRequest.StartingBid">Starting Bid ($)</label>
+                    <input type="number" class="form-control" asp-for="StartRequest.StartingBid"
+                           step="0.01" min="0.01" required
+                           value="@(Model.SelectedVehicle?.StartingBid ?? 0)" />
+                    <span asp-validation-for="StartRequest.StartingBid" class="text-danger"></span>
+                    <small style="color: var(--text-secondary);">
+                        Set the minimum bid amount for this auction.
+                    </small>
+                </div>
+
+                <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-gavel"></i> Start Auction
+                    </button>
+                    <a href="/Auctions" class="btn btn-outline" style="margin-left: 1rem;">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+

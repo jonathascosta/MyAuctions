@@ -1,0 +1,149 @@
+﻿@page "{id:guid}"
+@using MyAuctions.AuctionHub.Models
+@using MyAuctions.AuctionHub.Pages.Auctions
+@model PlaceBidModel
+@{
+    ViewData["Title"] = "Place Bid";
+}
+
+@if (!User.IsInRole("Bidder"))
+{
+    <div class="alert alert-error">
+        <i class="fas fa-exclamation-triangle"></i>
+        Access denied. Only bidders can place bids.
+    </div>
+    <a href="/Auctions" class="btn btn-outline">
+        <i class="fas fa-arrow-left"></i> Back to Auctions
+    </a>
+}
+else if (Model.Auction == null)
+{
+    <div class="loading">
+        <i class="fas fa-exclamation-triangle"></i>
+        <p>Auction not found or failed to load.</p>
+        <a href="/Auctions" class="btn btn-primary" style="margin-top: 1rem;">
+            <i class="fas fa-arrow-left"></i> Back to Auctions
+        </a>
+    </div>
+}
+else if (Model.Auction.Status != AuctionStatus.Active)
+{
+    <div class="alert alert-warning">
+        <i class="fas fa-exclamation-triangle"></i>
+        This auction is no longer active. Bidding is closed.
+    </div>
+    <a href="/Auctions" class="btn btn-outline">
+        <i class="fas fa-arrow-left"></i> Back to Auctions
+    </a>
+}
+else
+{
+    <div class="page-header">
+        <h1 class="page-title">Place Your Bid</h1>
+        <a href="/Auctions" class="btn btn-outline">
+            <i class="fas fa-arrow-left"></i> Back to Auctions
+        </a>
+    </div>
+
+    <div style="max-width: 600px; margin: 0 auto;">
+        <!-- Auction Information -->
+        <div class="card" style="margin-bottom: 1.5rem;">
+            <div class="card-header">
+                <div>
+                    <div class="card-title">
+                        @Model.Auction.Vehicle.Year @Model.Auction.Vehicle.Manufacturer @Model.Auction.Vehicle.Model
+                    </div>
+                    <div class="card-subtitle">
+                        @Model.Auction.Vehicle.Type • Auction ID: @Model.Auction.Id.ToString().Substring(0, 8)
+                    </div>
+                </div>
+                <span class="badge badge-active">Active</span>
+            </div>
+
+            <div class="card-body">
+                <div style="background: var(--background-color); padding: 1rem; border-radius: var(--border-radius);">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">Starting Bid</div>
+                            <div style="font-size: 1.125rem; font-weight: 600;">$@Model.Auction.StartingBid.ToString("N2")</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">Current Highest Bid</div>
+                            <div style="font-size: 1.25rem; font-weight: 600; color: var(--success-color);">
+                                @if (Model.Auction.CurrentBid.HasValue)
+                                {
+                                    <text>$@Model.Auction.CurrentBid.Value.ToString("N2")</text>
+                                }
+                                else
+                                {
+                                    <text>No bids yet</text>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.Auction.CurrentBidder))
+                    {
+                        <div style="font-size: 0.875rem; color: var(--text-secondary);">
+                            Leading bidder: <strong>@Model.Auction.CurrentBidder</strong>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Bid Form -->
+        <div class="card">
+            <form method="post">
+                <div class="form-group">
+                    <label class="form-label" asp-for="BidRequest.Amount">Your Bid Amount ($)</label>
+                    <input type="number" class="form-control" asp-for="BidRequest.Amount"
+                           step="0.01" min="@(Model.MinimumBid)" required
+                           placeholder="Enter your bid amount" />
+                    <span asp-validation-for="BidRequest.Amount" class="text-danger"></span>
+                    <small style="color: var(--text-secondary);">
+                        Minimum bid: $@Model.MinimumBid.ToString("N2")
+                    </small>
+                </div>
+
+                <div style="background: var(--background-color); padding: 1rem; border-radius: var(--border-radius); margin: 1rem 0;">
+                    <h4 style="margin-bottom: 0.5rem; color: var(--text-primary);">
+                        <i class="fas fa-info-circle"></i> Bidding Guidelines
+                    </h4>
+                    <ul style="margin: 0; padding-left: 1.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+                        <li>Your bid must be higher than the current highest bid</li>
+                        <li>All bids are final and cannot be withdrawn</li>
+                        <li>The auction may end at any time at the administrator's discretion</li>
+                    </ul>
+                </div>
+
+                <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-hand-paper"></i> Place Bid - $<span id="bidDisplay">0.00</span>
+                    </button>
+                    <a href="/Auctions" class="btn btn-outline" style="width: 100%; margin-top: 0.5rem;">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        // Update bid display when amount changes
+        document.addEventListener('DOMContentLoaded', function () {
+            const bidInput = document.querySelector('input[name="BidRequest.Amount"]');
+            const bidDisplay = document.getElementById('bidDisplay');
+
+            if (bidInput && bidDisplay) {
+                bidInput.addEventListener('input', function () {
+                    const amount = parseFloat(this.value) || 0;
+                    bidDisplay.textContent = amount.toFixed(2);
+                });
+            }
+        });
+    </script>
+}
+

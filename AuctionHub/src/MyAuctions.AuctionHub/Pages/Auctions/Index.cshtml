@@ -1,0 +1,137 @@
+﻿@page
+@using MyAuctions.AuctionHub.Models
+@using MyAuctions.AuctionHub.Pages.Auctions
+@model AuctionsIndexModel
+@{
+    ViewData["Title"] = "Auctions";
+}
+
+<div class="page-header">
+    <h1 class="page-title">Active Auctions</h1>
+    @if (User.IsInRole("Admin"))
+    {
+        <a href="/Auctions/Start" class="btn btn-primary">
+            <i class="fas fa-gavel"></i> Start New Auction
+        </a>
+    }
+</div>
+
+@if (Model.Auctions.Any())
+{
+    <div class="grid">
+        @foreach (var auction in Model.Auctions)
+        {
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">
+                            @auction.Vehicle.Year @auction.Vehicle.Manufacturer @auction.Vehicle.Model
+                        </div>
+                        <div class="card-subtitle">
+                            Auction ID: @auction.Id.ToString().Substring(0, 8)
+                        </div>
+                    </div>
+                    <span class="badge badge-@auction.Status.ToString().ToLower()">
+                        @auction.Status
+                    </span>
+                </div>
+
+                <div class="card-body">
+                    <div style="background: var(--background-color); padding: 1rem; border-radius: var(--border-radius); margin-bottom: 1rem;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">Starting Bid</div>
+                                <div style="font-size: 1.125rem; font-weight: 600;">$@auction.StartingBid.ToString("N2")</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">Current Bid</div>
+                                <div style="font-size: 1.125rem; font-weight: 600; color: var(--success-color);">
+                                    @if (auction.CurrentBid.HasValue)
+                                    {
+                                        <text>$@auction.CurrentBid.Value.ToString("N2")</text>
+                                    }
+                                    else
+                                    {
+                                        <text>No bids yet</text>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(auction.CurrentBidder))
+                        {
+                            <div style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+                                Leading bidder: <strong>@auction.CurrentBidder</strong>
+                            </div>
+                        }
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.875rem;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: var(--text-secondary);">Vehicle Type:</span>
+                            <span style="font-weight: 500;">@auction.Vehicle.Type</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: var(--text-secondary);">Started:</span>
+                            <span style="font-weight: 500;">@auction.StartedAt.ToString("MMM dd, HH:mm")</span>
+                        </div>
+                        @if (auction.Bids.Any())
+                        {
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: var(--text-secondary);">Total Bids:</span>
+                                <span style="font-weight: 500;">@auction.Bids.Count</span>
+                            </div>
+                        }
+                        @if (auction.EndedAt.HasValue)
+                        {
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: var(--text-secondary);">Ended:</span>
+                                <span style="font-weight: 500;">@auction.EndedAt.Value.ToString("MMM dd, HH:mm")</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="card-actions">
+                    <a href="/Auctions/Details/@auction.Id" class="btn btn-outline">
+                        <i class="fas fa-eye"></i> View Details
+                    </a>
+
+                    @if (auction.Status == AuctionStatus.Active)
+                    {
+                        @if (User.IsInRole("Bidder"))
+                        {
+                            <a href="/Auctions/Bid/@auction.Id" class="btn btn-primary">
+                                <i class="fas fa-hand-paper"></i> Place Bid
+                            </a>
+                        }
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <form method="post" asp-page-handler="StopAuction" asp-route-id="@auction.Id" style="display: inline;">
+                                <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('Are you sure you want to stop this auction?')">
+                                    <i class="fas fa-stop"></i> Stop Auction
+                                </button>
+                            </form>
+                        }
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="loading">
+        <i class="fas fa-gavel"></i>
+        <p>No auctions available at the moment.</p>
+        @if (User.IsInRole("Admin"))
+        {
+            <a href="/Auctions/Start" class="btn btn-primary" style="margin-top: 1rem;">
+                <i class="fas fa-plus"></i> Start First Auction
+            </a>
+        }
+    </div>
+}
+

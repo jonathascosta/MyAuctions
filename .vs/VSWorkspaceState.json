@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\AuctionApi",
+    "\\AuctionApi\\src",
+    "\\AuctionApi\\src\\MyAuctions.AuctionApi",
+    "\\AuctionApi\\src\\MyAuctions.AuctionApi\\Models",
+    "\\UserApi",
+    "\\UserApi\\src",
+    "\\UserApi\\src\\MyAuctions.UserApi"
+  ],
+  "SelectedNode": "\\AuctionApi\\src\\MyAuctions.AuctionApi\\Models\\Auction.cs",
+  "PreviewInSolutionExplorer": false
+}

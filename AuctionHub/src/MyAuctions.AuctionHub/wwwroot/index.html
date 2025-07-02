@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Auction Platform</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-car"></i>
+                <span>AuctionHub</span>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="#home" class="nav-link active" data-section="home">Home</a>
+                <a href="#vehicles" class="nav-link" data-section="vehicles">Vehicles</a>
+                <a href="#auctions" class="nav-link" data-section="auctions">Auctions</a>
+                <div class="nav-auth" id="navAuth">
+                    <button class="btn btn-outline" id="loginBtn">Login</button>
+                    <button class="btn btn-primary" id="registerBtn">Register</button>
+                </div>
+                <div class="nav-user hidden" id="navUser">
+                    <span class="user-info" id="userInfo"></span>
+                    <button class="btn btn-outline" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+            <div class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>Premium Vehicle Auctions</h1>
+                    <p>Discover exceptional vehicles through our secure auction platform. Bid with confidence on quality cars, trucks, and SUVs.</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-large" id="exploreBtn">Explore Auctions</button>
+                        <button class="btn btn-outline btn-large" id="learnMoreBtn">Learn More</button>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <i class="fas fa-car-side"></i>
+                </div>
+            </div>
+            
+            <div class="features">
+                <div class="container">
+                    <h2>Why Choose AuctionHub?</h2>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>Secure Bidding</h3>
+                            <p>Advanced security measures protect your transactions and personal information.</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-search"></i>
+                            <h3>Easy Search</h3>
+                            <p>Find the perfect vehicle with our advanced search and filtering options.</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-clock"></i>
+                            <h3>Real-time Updates</h3>
+                            <p>Stay informed with live auction updates and instant bid notifications.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vehicles Section -->
+        <section id="vehicles" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Vehicle Inventory</h2>
+                    <div class="section-actions">
+                        <button class="btn btn-primary admin-only hidden" id="addVehicleBtn">
+                            <i class="fas fa-plus"></i> Add Vehicle
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Search Filters -->
+                <div class="search-filters">
+                    <div class="filter-group">
+                        <label for="typeFilter">Type</label>
+                        <select id="typeFilter">
+                            <option value="">All Types</option>
+                            <option value="Sedan">Sedan</option>
+                            <option value="Hatchback">Hatchback</option>
+                            <option value="SUV">SUV</option>
+                            <option value="Truck">Truck</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="manufacturerFilter">Manufacturer</label>
+                        <input type="text" id="manufacturerFilter" placeholder="Enter manufacturer">
+                    </div>
+                    <div class="filter-group">
+                        <label for="modelFilter">Model</label>
+                        <input type="text" id="modelFilter" placeholder="Enter model">
+                    </div>
+                    <div class="filter-group">
+                        <label for="yearFilter">Year</label>
+                        <input type="number" id="yearFilter" placeholder="Enter year" min="1886" max="2100">
+                    </div>
+                    <button class="btn btn-primary" id="searchBtn">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <button class="btn btn-outline" id="clearFiltersBtn">Clear</button>
+                </div>
+
+                <!-- Vehicles Grid -->
+                <div class="vehicles-grid" id="vehiclesGrid">
+                    <div class="loading" id="vehiclesLoading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <span>Loading vehicles...</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Auctions Section -->
+        <section id="auctions" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Active Auctions</h2>
+                </div>
+
+                <!-- Auctions Grid -->
+                <div class="auctions-grid" id="auctionsGrid">
+                    <div class="loading" id="auctionsLoading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <span>Loading auctions...</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Login</h3>
+                <button class="modal-close" data-modal="loginModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginUsername">Username</label>
+                    <input type="text" id="loginUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <button type="button" class="btn btn-outline" data-modal="loginModal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Register</h3>
+                <button class="modal-close" data-modal="registerModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerUsername">Username</label>
+                    <input type="text" id="registerUsername" required minlength="3" maxlength="50">
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" required minlength="6" maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label for="registerRole">Role</label>
+                    <select id="registerRole" required>
+                        <option value="">Select Role</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Bidder">Bidder</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                    <button type="button" class="btn btn-outline" data-modal="registerModal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Vehicle Modal -->
+    <div class="modal" id="addVehicleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Vehicle</h3>
+                <button class="modal-close" data-modal="addVehicleModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="addVehicleForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="vehicleType">Type</label>
+                        <select id="vehicleType" required>
+                            <option value="">Select Type</option>
+                            <option value="Sedan">Sedan</option>
+                            <option value="Hatchback">Hatchback</option>
+                            <option value="SUV">SUV</option>
+                            <option value="Truck">Truck</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="vehicleYear">Year</label>
+                        <input type="number" id="vehicleYear" required min="1886" max="2100">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="vehicleManufacturer">Manufacturer</label>
+                        <input type="text" id="vehicleManufacturer" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="vehicleModel">Model</label>
+                        <input type="text" id="vehicleModel" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="vehicleStartingBid">Starting Bid ($)</label>
+                    <input type="number" id="vehicleStartingBid" required min="0.01" step="0.01">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="vehicleDoors">Doors (optional)</label>
+                        <input type="number" id="vehicleDoors" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="vehicleSeats">Seats (optional)</label>
+                        <input type="number" id="vehicleSeats" min="1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="vehicleLoadCapacity">Load Capacity (optional)</label>
+                    <input type="number" id="vehicleLoadCapacity" min="0.01" step="0.01">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Add Vehicle</button>
+                    <button type="button" class="btn btn-outline" data-modal="addVehicleModal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Vehicle Details Modal -->
+    <div class="modal" id="vehicleDetailsModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 id="vehicleDetailsTitle">Vehicle Details</h3>
+                <button class="modal-close" data-modal="vehicleDetailsModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="vehicleDetailsContent">
+                <!-- Vehicle details will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Start Auction Modal -->
+    <div class="modal" id="startAuctionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Start Auction</h3>
+                <button class="modal-close" data-modal="startAuctionModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="startAuctionForm">
+                <input type="hidden" id="auctionVehicleId">
+                <div class="form-group">
+                    <label for="auctionStartingBid">Starting Bid ($)</label>
+                    <input type="number" id="auctionStartingBid" required min="0.01" step="0.01">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Start Auction</button>
+                    <button type="button" class="btn btn-outline" data-modal="startAuctionModal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Place Bid Modal -->
+    <div class="modal" id="placeBidModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Place Bid</h3>
+                <button class="modal-close" data-modal="placeBidModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="placeBidForm">
+                <input type="hidden" id="bidAuctionId">
+                <div class="bid-info" id="bidInfo">
+                    <!-- Auction info will be populated here -->
+                </div>
+                <div class="form-group">
+                    <label for="bidAmount">Bid Amount ($)</label>
+                    <input type="number" id="bidAmount" required min="0.01" step="0.01">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Place Bid</button>
+                    <button type="button" class="btn btn-outline" data-modal="placeBidModal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/vehicles.js"></script>
+    <script src="js/auctions.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
+

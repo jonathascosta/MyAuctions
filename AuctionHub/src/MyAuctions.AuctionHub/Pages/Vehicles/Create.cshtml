@@ -1,0 +1,105 @@
+﻿@page
+@using MyAuctions.AuctionHub.Pages.Vehicles
+@model CreateVehicleModel
+@{
+    ViewData["Title"] = "Add Vehicle";
+}
+
+@if (!User.IsInRole("Admin"))
+{
+    <div class="alert alert-error">
+        <i class="fas fa-exclamation-triangle"></i>
+        Access denied. Only administrators can add vehicles.
+    </div>
+    <a href="/Vehicles" class="btn btn-outline">
+        <i class="fas fa-arrow-left"></i> Back to Vehicles
+    </a>
+}
+else
+{
+    <div class="page-header">
+        <h1 class="page-title">Add New Vehicle</h1>
+        <a href="/Vehicles" class="btn btn-outline">
+            <i class="fas fa-arrow-left"></i> Back to Vehicles
+        </a>
+    </div>
+
+    <div style="max-width: 600px; margin: 0 auto;">
+        <div class="card">
+            <form method="post">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" asp-for="CreateRequest.Type">Type</label>
+                        <select class="form-control" asp-for="CreateRequest.Type" required>
+                            <option value="">Select Type</option>
+                            <option value="Sedan">Sedan</option>
+                            <option value="Hatchback">Hatchback</option>
+                            <option value="SUV">SUV</option>
+                            <option value="Truck">Truck</option>
+                        </select>
+                        <span asp-validation-for="CreateRequest.Type" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" asp-for="CreateRequest.Year">Year</label>
+                        <input type="number" class="form-control" asp-for="CreateRequest.Year"
+                               min="1886" max="2100" required />
+                        <span asp-validation-for="CreateRequest.Year" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" asp-for="CreateRequest.Manufacturer">Manufacturer</label>
+                        <input type="text" class="form-control" asp-for="CreateRequest.Manufacturer" required />
+                        <span asp-validation-for="CreateRequest.Manufacturer" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" asp-for="CreateRequest.Model">Model</label>
+                        <input type="text" class="form-control" asp-for="CreateRequest.Model" required />
+                        <span asp-validation-for="CreateRequest.Model" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" asp-for="CreateRequest.StartingBid">Starting Bid ($)</label>
+                    <input type="number" class="form-control" asp-for="CreateRequest.StartingBid"
+                           step="0.01" min="0.01" required />
+                    <span asp-validation-for="CreateRequest.StartingBid" class="text-danger"></span>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" asp-for="CreateRequest.Doors">Doors (Optional)</label>
+                        <input type="number" class="form-control" asp-for="CreateRequest.Doors" min="1" />
+                        <span asp-validation-for="CreateRequest.Doors" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" asp-for="CreateRequest.Seats">Seats (Optional)</label>
+                        <input type="number" class="form-control" asp-for="CreateRequest.Seats" min="1" />
+                        <span asp-validation-for="CreateRequest.Seats" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" asp-for="CreateRequest.LoadCapacity">Load Capacity in tons (Optional)</label>
+                    <input type="number" class="form-control" asp-for="CreateRequest.LoadCapacity"
+                           step="0.01" min="0.01" />
+                    <span asp-validation-for="CreateRequest.LoadCapacity" class="text-danger"></span>
+                </div>
+
+                <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Vehicle
+                    </button>
+                    <a href="/Vehicles" class="btn btn-outline" style="margin-left: 1rem;">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+

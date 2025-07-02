@@ -1,0 +1,140 @@
+﻿@page
+@using MyAuctions.AuctionHub.Pages.Vehicles
+@model VehiclesIndexModel
+@{
+    ViewData["Title"] = "Vehicles";
+}
+
+<div class="page-header">
+    <h1 class="page-title">Vehicle Inventory</h1>
+    @if (User.IsInRole("Admin"))
+    {
+        <a href="/Vehicles/Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add Vehicle
+        </a>
+    }
+</div>
+
+<!-- Search Filters -->
+<div class="search-filters">
+    <form method="get">
+        <div class="filter-grid">
+            <div class="form-group">
+                <label class="form-label">Type</label>
+                <select name="Type" class="form-control">
+                    <option value="">All Types</option>
+                    <option value="Sedan" selected="@(Model.SearchQuery.Type?.ToString() == "Sedan")">Sedan</option>
+                    <option value="Hatchback" selected="@(Model.SearchQuery.Type?.ToString() == "Hatchback")">Hatchback</option>
+                    <option value="SUV" selected="@(Model.SearchQuery.Type?.ToString() == "SUV")">SUV</option>
+                    <option value="Truck" selected="@(Model.SearchQuery.Type?.ToString() == "Truck")">Truck</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Manufacturer</label>
+                <input type="text" name="Manufacturer" class="form-control"
+                       value="@Model.SearchQuery.Manufacturer" placeholder="Enter manufacturer" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Model</label>
+                <input type="text" name="Model" class="form-control"
+                       value="@Model.SearchQuery.Model" placeholder="Enter model" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Year</label>
+                <input type="number" name="Year" class="form-control"
+                       value="@Model.SearchQuery.Year" placeholder="Enter year" min="1886" max="2100" />
+            </div>
+        </div>
+
+        <div style="margin-top: 1rem;">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-search"></i> Search
+            </button>
+            <a href="/Vehicles" class="btn btn-outline">
+                <i class="fas fa-times"></i> Clear
+            </a>
+        </div>
+    </form>
+</div>
+
+<!-- Vehicles Grid -->
+@if (Model.Vehicles.Any())
+{
+    <div class="grid">
+        @foreach (var vehicle in Model.Vehicles)
+        {
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">@vehicle.Year @vehicle.Manufacturer @vehicle.Model</div>
+                        <div class="card-subtitle">ID: @vehicle.Id.ToString().Substring(0, 8)</div>
+                    </div>
+                    <span class="badge badge-@vehicle.Type.ToString().ToLower()">@vehicle.Type</span>
+                </div>
+
+                <div class="card-body">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.875rem;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: var(--text-secondary);">Starting Bid:</span>
+                            <span style="font-weight: 500;">$@vehicle.StartingBid.ToString("N2")</span>
+                        </div>
+
+                        @if (vehicle.Doors.HasValue)
+                        {
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: var(--text-secondary);">Doors:</span>
+                                <span style="font-weight: 500;">@vehicle.Doors</span>
+                            </div>
+                        }
+
+                        @if (vehicle.Seats.HasValue)
+                        {
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: var(--text-secondary);">Seats:</span>
+                                <span style="font-weight: 500;">@vehicle.Seats</span>
+                            </div>
+                        }
+
+                        @if (vehicle.LoadCapacity.HasValue)
+                        {
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: var(--text-secondary);">Load Capacity:</span>
+                                <span style="font-weight: 500;">@vehicle.LoadCapacity tons</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="card-actions">
+                    <a href="/Vehicles/Details/@vehicle.Id" class="btn btn-outline">
+                        <i class="fas fa-eye"></i> View Details
+                    </a>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a href="/Auctions/Start?vehicleId=@vehicle.Id" class="btn btn-primary">
+                            <i class="fas fa-gavel"></i> Start Auction
+                        </a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="loading">
+        <i class="fas fa-car"></i>
+        <p>No vehicles found matching your criteria.</p>
+        @if (User.IsInRole("Admin"))
+        {
+            <a href="/Vehicles/Create" class="btn btn-primary" style="margin-top: 1rem;">
+                <i class="fas fa-plus"></i> Add First Vehicle
+            </a>
+        }
+    </div>
+}
+

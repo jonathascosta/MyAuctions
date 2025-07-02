@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Vehicle Auction Platform</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a class="nav-brand" href="/">
+                <i class="fas fa-car-side"></i>
+                AuctionHub
+            </a>
+            <div class="nav-menu">
+                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/Vehicles">Vehicles</a>
+                <a class="nav-link" href="/Auctions">Auctions</a>
+                
+                @if (User?.Identity?.IsAuthenticated == true)
+                {
+                    var userLogin = User.Identity.Name;
+                    var userRole = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
+                    
+                    <span class="nav-link">Welcome, @userLogin (@userRole)</span>
+                    <a class="btn btn-outline" href="/Auth/Logout">Logout</a>
+                }
+                else
+                {
+                    <a class="btn btn-outline" href="/Auth/Login">Login</a>
+                    <a class="btn btn-primary" href="/Auth/Register">Register</a>
+                }
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+            
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-error">
+                    @TempData["ErrorMessage"]
+                </div>
+            }
+            
+            @RenderBody()
+        </div>
+    </main>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
